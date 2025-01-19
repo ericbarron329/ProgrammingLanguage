@@ -10,6 +10,7 @@ private:
     Token currentToken;
 
     void advance();
+    void expect(TokenType type);
 
     ASTNode* parseStatement();
     ASTNode* parseLetStatement();
@@ -17,7 +18,6 @@ private:
     ASTNode* parseExpression();
     ASTNode* parseTerm();
     ASTNode* parseFactor();
-    void expect(TokenType type);
 
 public:
     Parser(Lexer lexer);
