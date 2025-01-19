@@ -12,6 +12,7 @@ private:
     void advance();
     void expect(TokenType type);
 
+public:
     ASTNode* parseStatement();
     ASTNode* parseLetStatement();
     ASTNode* parsePrintStatement();
@@ -19,7 +20,6 @@ private:
     ASTNode* parseTerm();
     ASTNode* parseFactor();
 
-public:
     Parser(Lexer lexer);
     ASTNode* parseProgram();
 };

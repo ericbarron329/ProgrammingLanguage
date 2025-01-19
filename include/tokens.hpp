@@ -24,6 +24,8 @@ struct Token {
     int line;
     int column;
 
+    Token() : type(TokenType::UNKNOWN), value(""), line(0), column(0) {}
+
     Token(TokenType t, const std::string& v, int l = 0, int c = 0) 
     : type(t), value(v), line(l), column(c) {
 
