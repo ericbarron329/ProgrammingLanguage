@@ -15,6 +15,7 @@ enum TokenType {
     SEMICOLON,
     LEFT_PAREN,
     RIGHT_PAREN,
+    STRING,
     END_OF_FILE,
     UNKNOWN
 };

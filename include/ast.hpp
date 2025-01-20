@@ -7,7 +7,6 @@
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
-    virtual std::string toString() const = 0;
 };
 
 class LetStatement : public ASTNode {
@@ -15,10 +14,6 @@ public:
     std::string identifier;
     ASTNode* value;
     LetStatement(const std::string& id, ASTNode* val) : identifier(id), value(val) {}
-
-    std::string toString() const override {
-        return "LetStatement(identifier: " + identifier + ", value " + value->toString() + ")";
-    }
 };
 
 class PrintStatement : public ASTNode {
@@ -40,10 +35,6 @@ class NumberLiteral : public ASTNode {
 public:
     int value;
     NumberLiteral(int val) : value(val) {}
-
-    std::string toString() const override {
-        return "NumberLiteral(value: " + std::to_string(value) + ")";
-    }
 };
 
 class Identifier : public ASTNode {
@@ -51,9 +42,6 @@ public:
     std::string name;
     Identifier(const std::string& id) : name(id) {}
 
-    std::string toString() const override {
-        return name;
-    }
 };
 
 class Program : public ASTNode {

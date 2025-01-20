@@ -13,10 +13,6 @@ void Parser::expect(TokenType expectedToken) {
     if (currentToken.type == expectedToken) {
         std::cout << "token matches: " << expectedToken << "!" << std::endl;
         advance();
-        std::cout << "Moving to this new token: " << currentToken.type << " " << currentToken.value << std::endl;
-        // advance();
-        // std::cout << "Moving to this new token 2: " << currentToken.type << " " << currentToken.value << std::endl;
-        
     } else {
         std::cout << "Error: Expected " << expectedToken
         << " but found " << currentToken.type 
@@ -30,19 +26,25 @@ ASTNode* Parser::parseLetStatement() {
     std::string identifier;
     ASTNode* value;
     expect(TokenType::LET);
-    // std::cout << currentToken.type << " " << currentToken.value << std::endl;
-    // advance();
-    // identifier = currentToken.value;
-    // expect(TokenType::IDENTIFIER);
-    // expect(TokenType::EQUAL);
-    // value = parseExpression();
-    // expect(TokenType::SEMICOLON);
+    identifier = currentToken.value;
+    expect(TokenType::IDENTIFIER);
+    expect(TokenType::EQUAL);
+    value = parseExpression();
+    expect(TokenType::SEMICOLON);
 
     LetStatement* letStatement = new LetStatement(identifier, value);
-
-    // std::cout   << "LetStatement: identifier = " << identifier
-    //             << ", value = " << static_cast<NumberLiteral*>(value)->value << std::endl;
     return letStatement;
+}
+
+ASTNode* Parser::parsePrintStatement() {
+    ASTNode* printValue;
+    
+    expect(TokenType::PRINT); 
+    printValue = parseExpression();
+    expect(TokenType::SEMICOLON);
+
+    PrintStatement* printStatement = new PrintStatement(printValue);
+    return printStatement;
 }
 
 ASTNode* Parser::parseExpression() {

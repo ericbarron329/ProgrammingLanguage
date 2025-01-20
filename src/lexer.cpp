@@ -1,5 +1,6 @@
 #include "../include/lexer.hpp"
 #include <string>
+#include <iostream>
 
 Lexer::Lexer(const std::string& input) {
     this->input = input;
@@ -34,7 +35,7 @@ Token Lexer::getNextToken() {
     } else if (isdigit(currentChar)) {
         // Digit Token
         return matchNumber();
-    } else if (currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == ';' || currentChar == '<' || currentChar == '>' || currentChar == '=' || currentChar == '(' || currentChar == ')') {
+    } else if (currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == ';' || currentChar == '<' || currentChar == '>' || currentChar == '=' || currentChar == '(' || currentChar == ')' || currentChar == '"') {
         // Operator Token
         return matchOperator();
     } else if (currentChar == '\0') {
@@ -134,6 +135,23 @@ Token Lexer::matchOperator() {
         case ';': currentType = TokenType::SEMICOLON; advance(); break;
         case '(': currentType = TokenType::LEFT_PAREN; advance();break;
         case ')': currentType = TokenType::RIGHT_PAREN; advance(); break;
+        case '"': {
+            currentType = TokenType::STRING; 
+            advance();
+
+            while (currentChar != '"' && currentChar != '\0') {
+                value += currentChar;
+                advance();
+            }
+            if (currentChar == '"') {
+                advance();
+            } else {
+                std::cerr << "Error: string must end with \" " << std::endl;
+                currentType = TokenType::UNKNOWN;
+            }
+            value.erase(0,1);
+            break;
+        }
         default:
             currentType = TokenType::UNKNOWN; break;
     }
