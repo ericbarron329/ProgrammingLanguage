@@ -5,8 +5,8 @@
 #include "ast.hpp"
 
 class Parser {
-private:
-    Lexer lexer;
+public:
+    Lexer& lexer;
     Token currentToken;
 
     void advance();
@@ -20,7 +20,7 @@ public:
     ASTNode* parseTerm();
     ASTNode* parseFactor();
 
-    Parser(Lexer lexer);
+    Parser(Lexer &lexer);
     ASTNode* parseProgram();
 };
 

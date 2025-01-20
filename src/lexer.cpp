@@ -34,7 +34,7 @@ Token Lexer::getNextToken() {
     } else if (isdigit(currentChar)) {
         // Digit Token
         return matchNumber();
-    } else if (currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*') {
+    } else if (currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == ';' || currentChar == '<' || currentChar == '>' || currentChar == '=' || currentChar == '(' || currentChar == ')') {
         // Operator Token
         return matchOperator();
     } else if (currentChar == '\0') {
@@ -115,24 +115,25 @@ Token Lexer::matchOperator() {
 
     switch(currentChar) {
 
-        case '+': currentType = TokenType::PLUS; break;
-        case '-': currentType = TokenType::MINUS; break;
-        case '*': currentType = TokenType::MULTIPLY; break;
-        case '/': currentType = TokenType::DIVIDE; break;
+        case '+': currentType = TokenType::PLUS; advance(); break;
+        case '-': currentType = TokenType::MINUS; advance(); break;
+        case '*': currentType = TokenType::MULTIPLY; advance(); break;
+        case '/': currentType = TokenType::DIVIDE; advance(); break;
         case '=':
             if (peek() == '=') {
                 currentChar += '=';
                 advance();
-                currentType = TokenType::EQUAL; break;
+                currentType = TokenType::COMPARE; break;
             } else {
+                advance();
                 currentType = TokenType::EQUAL; break;
             }
             break;
-        case '<': currentType = TokenType::LESS_THAN; break;
-        case '>': currentType = TokenType::GREATER_THAN; break;
-        case ';': currentType = TokenType::SEMICOLON; break;
-        case '(': currentType = TokenType::LEFT_PAREN; break;
-        case ')': currentType = TokenType::RIGHT_PAREN; break;
+        case '<': currentType = TokenType::LESS_THAN; advance(); break;
+        case '>': currentType = TokenType::GREATER_THAN; advance(); break;
+        case ';': currentType = TokenType::SEMICOLON; advance(); break;
+        case '(': currentType = TokenType::LEFT_PAREN; advance();break;
+        case ')': currentType = TokenType::RIGHT_PAREN; advance(); break;
         default:
             currentType = TokenType::UNKNOWN; break;
     }

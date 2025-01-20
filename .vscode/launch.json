@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run and Debug C++ Program",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/main", // Path to your compiled executable
+            "args": [],                          // Add command-line arguments if needed
+            "stopAtEntry": false,                // Change to true if you want it to pause at the entry point
+            "cwd": "${workspaceFolder}",         // Set the working directory
+            "environment": [],
+            "externalConsole": false,            // Change to true if you want an external terminal
+            "MIMode": "lldb"                     // Use "gdb" if you're on Linux or using GDB
+        }
+    ]
+}

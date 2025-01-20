@@ -9,6 +9,7 @@ enum TokenType {
     DIVIDE,
     MULTIPLY,
     EQUAL,
+    COMPARE,
     LESS_THAN,
     GREATER_THAN,
     SEMICOLON,
