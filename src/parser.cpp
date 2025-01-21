@@ -70,3 +70,15 @@ ASTNode* Parser::parseExpression() {
         exit(1); 
     }
 }
+
+ASTNode* Parser::parseProgram() {
+    if (currentToken.type == TokenType::LET) {
+        return parseLetStatement();
+    } else if (currentToken.type == TokenType::PRINT) {
+        return parsePrintStatement();
+    } else {
+        std::cerr << "Error: unable to parse token..." << std::endl;
+        exit(1);
+    }
+
+}
