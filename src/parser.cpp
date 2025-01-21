@@ -63,8 +63,13 @@ ASTNode* Parser::parseExpression() {
         ASTNode* expression = parseExpression();
         expect(TokenType::RIGHT_PAREN);
         return expression;
+    } else if (currentToken.type == TokenType::STRING) {
+        std::string value = currentToken.value;
+        advance();
+        StringLiteral* stringLiteral = new StringLiteral(value);
+        return stringLiteral;
     } else {
-        std::cerr   << "Error: Unexpected token " << currentToken.value
+        std::cerr   << "Error: Unexpected token " << currentToken.type
                     << " at line " << lexer.getLine()
                     << ", column " << lexer.getColumn() << std::endl;
         exit(1); 

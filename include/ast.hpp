@@ -78,4 +78,14 @@ public:
     }
 };
 
+class StringLiteral : public ASTNode {
+public:
+    std::string stringLiteral;
+    StringLiteral(const std::string &strval) : stringLiteral(strval) {}
+
+    std::string toString() const override {
+        return stringLiteral;
+    }
+};
+
 #endif
