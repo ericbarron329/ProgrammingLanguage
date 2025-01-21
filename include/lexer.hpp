@@ -27,7 +27,6 @@ public:
     int getColumn() const { return column; }
     
     Token getNextToken();
-    Token getFirstToken();
 };
 
 #endif 
