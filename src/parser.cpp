@@ -11,24 +11,13 @@ void Parser::advance() {
 
 void Parser::expect(TokenType expectedToken) {
     if (currentToken.type == expectedToken) {
-        // std::cout << "token matches: " << expectedToken << "!" << std::endl;
+        std::cout << "token matches: " << expectedToken << "!" << std::endl;
         advance();
     } else {
         std::cout << "Error: Expected " << expectedToken
         << " but found " << currentToken.type 
         << " at line " << lexer.getLine() 
         << ", column " << lexer.getColumn() << std::endl;
-        exit(1);
-    }
-}
-
-ASTNode* Parser::parseStatement() {
-    if (currentToken.type == TokenType::LET) {
-        return parseLetStatement();
-    } else if (currentToken.type == TokenType::PRINT) {
-        return parsePrintStatement();
-    } else {
-        std::cerr << "Error: Invalid token statement" << std::endl;
         exit(1);
     }
 }
@@ -80,18 +69,4 @@ ASTNode* Parser::parseExpression() {
                     << ", column " << lexer.getColumn() << std::endl;
         exit(1); 
     }
-}
-
-ASTNode* Parser::parseProgram() {
-    std::vector<ASTNode*> statements;
-
-    while (currentToken.type != TokenType::END_OF_FILE) {
-        ASTNode* statement = parseStatement();
-        if (statement != nullptr) {
-            statements.push_back(statement);
-        }
-    }
-
-    Program* program = new Program(statements);
-    return program;
 }

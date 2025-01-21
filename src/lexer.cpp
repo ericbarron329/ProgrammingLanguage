@@ -149,7 +149,7 @@ Token Lexer::matchOperator() {
                 std::cerr << "Error: string must end with \" " << std::endl;
                 currentType = TokenType::UNKNOWN;
             }
-            // value.erase(0,1);
+            value.erase(0,1);
             break;
         }
         default:
