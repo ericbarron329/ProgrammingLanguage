@@ -17,27 +17,24 @@ std::string readFile(const std::string& filename) {
 
 int main() {
 
-    try{
-        // File management
-        std::string code = readFile("code.bucket");
+    // File management
+    std::string code = readFile("code.bucket");
 
-        // Programming logic
-        Lexer lexer(code);
-        Parser parser(lexer);
+    // Programming logic
+    Lexer lexer(code);
+    Parser parser(lexer);
 
-        // Used to test Lexer
-        // while (lexer.getCurrentChar() != '\0') {
-        //     Token t = lexer.getNextToken();
-        //     std::cout << t.value << "\t" << t.type << std::endl;
-        // }
+    // Used to test Lexer
+    // while (lexer.getCurrentChar() != '\0') {
+    //     Token t = lexer.getNextToken();
+    //     std::cout << t.value << "\t" << t.type << std::endl;
+    // }
 
-        // Parser testing
-        ASTNode* node = parser.parseLetStatement();
+    // Parser testing
+    ASTNode* program = parser.parseProgram();
+    std::cout << program->toString() << std::endl;
+    delete program;
 
-    } catch (const std::exception& ex) {
-        std::cerr << "Error: " << ex.what() << std::endl;
-        return 1;
-    }
-
+    
     return 0;
 }
