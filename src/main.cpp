@@ -1,41 +1,38 @@
 #include <iostream>
-#include <fstream>
-#include "../include/lexer.hpp"
-#include "../include/parser.hpp"
-#include <sstream>
-
-std::string readFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file) {
-        throw std::runtime_error("Filed to open file: " + filename);
-    }
-
-    std::string line;
-    std::string content;
-
-    while (std::getline(file, line)) {
-        content += line + '\n';
-    }
-
-    return content;
-}
+#include "ast.hpp"
+#include "interpreter.hpp"
 
 int main() {
-    // File management
-    std::string code = readFile("code.bucket");
-    std::cout << code << std::endl;
-    // Programming logic
-    Lexer lexer(code);
-    Parser parser(lexer);
+    // program equivalent to:
+    // let x = 10
+    // print (x + 20)
+    // print "Hello"
 
-    // // Used to test Lexer
-    // while (lexer.getCurrentChar() != '\0') {
-    //     Token t = lexer.getNextToken();
-    //     std::cout << t.value << "\t" << t.type << std::endl;
-    // }
+    // 1) Construct AST by hand:
+    // let x = 10
+    auto* letX = new LetStatement("x", new NumberLiteral(10));
 
-    // Parser testing
-    ASTNode* parsedProgram = parser.parseProgram();
+    // print (x + 20)
+    auto* print1 = new PrintStatement(
+        new BinaryExpression("+", new Identifier("x"), new NumberLiteral(20))
+    );
 
+    // print "Hello"
+    auto* print2 = new PrintStatement(
+        new StringLiteral("Hello")
+    );
+
+    // Make a vector of statements
+    std::vector<ASTNode*> stmts = { letX, print1, print2 };
+
+    // Build the Program node
+    auto* program = new Program(stmts);
+
+    // 2) Interpret
+    Interpreter interpreter;
+    interpreter.interpret(program);
+
+    // 3) Cleanup
+    delete program; // This will recursively delete all contained AST nodes
     return 0;
 }
