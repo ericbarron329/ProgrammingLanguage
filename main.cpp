@@ -1,5 +1,11 @@
 #include <iostream>
+
+int addNumbers(int a, int b) {
+    return a + b;
+}
+
 int main() {
-    std::cout << "Hello from C++ compiled to WebAssembly!" << std::endl;
+    int result = addNumbers(3, 4);
+    std::cout << "Result: " << result << std::endl;
     return 0;
 }
