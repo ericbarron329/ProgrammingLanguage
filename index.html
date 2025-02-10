@@ -1,24 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Test WASM</title>
+  <meta charset="UTF-8" />
+  <title>WebAssembly Input Demo</title>
 </head>
 <body>
-    <h1>WebAssembly Test</h1>
-    <script>
-    WebAssembly.instantiateStreaming(fetch('output.wasm'), { env: {} }) 
-    .then(obj => {
-        let instance = obj.instance.exports;
-        instance.print_message();
-        console.log('The sum of 5 and 3 is:', instance.add(5, 3));
-    })
-    .catch(console.error);
 
+  <h1>Enter a string:</h1>
+  <input type="text" id="userInput" value="Hello WebAssembly!" />
+  <button id="processBtn">Process</button>
+  <div id="output"></div>
 
+  <!-- Load the Emscripten-generated JS. This also fetches the .wasm. -->
+  <script src="wasmModule.js"></script>
+  <script>
+    // We'll load the module. createModule() returns a Promise that
+    // resolves to the WASM module instance.
+    createModule().then((Module) => {
+      console.log("WASM module loaded.");
 
+      // Grab references to HTML elements
+      const inputField = document.getElementById("userInput");
+      const outputDiv = document.getElementById("output");
+      const processBtn = document.getElementById("processBtn");
 
-    </script>
-    
+      // We'll add a click listener to the "Process" button.
+      processBtn.addEventListener("click", () => {
+        // Get the user input from the text field
+        const userInput = inputField.value;
+
+        // Convert the JS string to a pointer in WASM memory
+        // Emscripten provides _malloc(), stringToUTF8(), etc.
+        const lengthBytes = Module.lengthBytesUTF8(userInput) + 1;
+        const stringOnWasmHeap = Module._malloc(lengthBytes);
+        Module.stringToUTF8(userInput, stringOnWasmHeap, lengthBytes);
+
+        // Now call our exported function: _processInput
+        //   int processInput(const char* input);
+        // We pass stringOnWasmHeap (which is a number) to the function.
+        const result = Module._processInput(stringOnWasmHeap);
+
+        // Free the allocated memory
+        Module._free(stringOnWasmHeap);
+
+        // Show the result
+        outputDiv.textContent = `Length of input: ${result}`;
+      });
+    });
+  </script>
 </body>
 </html>
