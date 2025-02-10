@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test WASM</title>
+</head>
+<body>
+    <h1>WebAssembly Test</h1>
+    <script>
+    WebAssembly.instantiateStreaming(fetch('output.wasm'), { env: {} }) 
+    .then(obj => {
+        let instance = obj.instance.exports;
+        instance.print_message();
+        console.log('The sum of 5 and 3 is:', instance.add(5, 3));
+    })
+    .catch(console.error);
+
+
+
+
+    </script>
+    
+</body>
+</html>
